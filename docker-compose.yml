@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+redis:
+image: redis:7-alpine
+container_name: devopshub-redis
+restart: unless-stopped
+command: redis-server --appendonly yes
+volumes:
+- redis_data:/data
+networks:
+- devopshub-network
+healthcheck:
+test: ["CMD", "redis-cli", "ping"]
+interval: 5s
+timeout: 3s
+retries: 5
+
+volumes:
+redis_data:
+driver: local
+
+networks:
+devopshub-network:
+driver: bridge
